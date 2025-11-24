@@ -96,14 +96,22 @@ with col2:
 
 # BOSS
 with col3:
-    boss_data = bosses.get_current_boss()
     st.markdown("### 👹 Boss del Mes")
 
-    if boss_data:
-        st.write(f"**{boss_data['name']} — Fase {boss_data['phase']}**")
-        st.progress(int((boss_data["current_hp"] / 100) * 100))
+    boss_data = bosses.get_current_boss()
+
+    # Si NO hay boss, mostramos algo visual pero seguro
+    if not boss_data:
+        st.write("🟣 **No hay Boss activo este mes.**")
+        st.progress(0)
     else:
-        st.write("No hay boss activo este mes.")
+        name = boss_data.get("name", "Boss desconocido")
+        phase = boss_data.get("phase", "?")
+        hp = boss_data.get("current_hp", 0)
+
+        st.write(f"**{name} — Fase {phase}**")
+        st.progress(int((hp / 100) * 100))
+
 
 # -----------------------------------------------------------
 # STATS VS STATS FINALES
