@@ -1,5 +1,6 @@
 import json
 from datetime import datetime, timedelta
+import random
 
 
 class StatsManager:
@@ -23,28 +24,19 @@ class StatsManager:
             json.dump(self.data, f, indent=4, ensure_ascii=False)
 
     # ----------------------------------------------------------
-    # CORE STAT RETRIEVAL
+    # BASE STATS
     # ----------------------------------------------------------
     def base_stats(self):
-        """Return base (unmodified) stats."""
         return self.data.get("stats", {})
 
     # ----------------------------------------------------------
-    # EMOTION IMPACT ON STATS
+    # EMOTIONAL MODIFIERS
     # ----------------------------------------------------------
     def emotional_modifiers(self):
-        """
-        Create temporary modifiers based on emotional state.
-        These are not saved as base stats, only used in 'final_stats'.
-        """
         emotion = self.data.get("emotion", {})
         mods = {
-            "strength": 0,
-            "intelligence": 0,
-            "wisdom": 0,
-            "charisma": 0,
-            "dexterity": 0,
-            "luck": 0
+            "strength": 0, "intelligence": 0, "wisdom": 0,
+            "charisma": 0, "dexterity": 0, "luck": 0
         }
 
         stress = emotion.get("stress", 0)
@@ -53,77 +45,63 @@ class StatsManager:
         clarity = emotion.get("clarity", 0)
         fatigue = emotion.get("fatigue", 0)
 
-        # NEGATIVE EMOTIONAL EFFECTS (DEBUFFS)
-        if anxiety > 70:
-            mods["dexterity"] -= 1
-        if stress > 75:
-            mods["charisma"] -= 1
-        if fatigue > 60:
-            mods["strength"] -= 2
-        if clarity < 30:
-            mods["wisdom"] -= 1
-        if motivation < 25:
-            mods["luck"] -= 1
+        # NEGATIVE STATES
+        if anxiety > 65: mods["wisdom"] -= 1
+        if stress > 70: mods["charisma"] -= 1
+        if fatigue > 60: mods["strength"] -= 1
+        if clarity < 30: mods["intelligence"] -= 1
+        if motivation < 25: mods["luck"] -= 1
 
-        # POSITIVE EMOTIONAL EFFECTS (BUFFS)
-        if motivation > 80:
-            mods["wisdom"] += 1
-        if clarity > 75:
-            mods["intelligence"] += 1
-        if motivation > 90:
-            mods["charisma"] += 1
-        if stress < 30 and clarity > 60:
-            mods["dexterity"] += 1
+        # POSITIVE STATES
+        if motivation > 80: mods["wisdom"] += 1
+        if clarity > 75: mods["intelligence"] += 1
+        if stress < 30 and clarity > 60: mods["dexterity"] += 1
 
         return mods
 
     # ----------------------------------------------------------
-    # BUFFS & DEBUFFS SYSTEM
+    # EFFECT (BUFF/DEBUFF) SYSTEM
     # ----------------------------------------------------------
     def active_effects(self):
-        """Returns list of buffs/debuffs and removes expired ones."""
+        """Return effects that haven't expired; remove expired ones."""
         effects = self.data.get("effects", [])
+        now = datetime.now()
 
-        today = datetime.now().date()
-        cleaned_effects = []
-
+        cleaned = []
         for e in effects:
-            end_date = datetime.strptime(e["end_date"], "%Y-%m-%d").date()
-            if end_date >= today:
-                cleaned_effects.append(e)
+            expiry = datetime.strptime(e["expires_at"], "%Y-%m-%d %H:%M")
+            if expiry > now:
+                cleaned.append(e)
 
-        self.data["effects"] = cleaned_effects
+        self.data["effects"] = cleaned
         self.save_memory()
-        return cleaned_effects
+        return cleaned
 
     def apply_effect_modifiers(self):
-        """Apply buffs/debuffs from temporary effects."""
         effects = self.active_effects()
+
         mods = {
-            "strength": 0,
-            "intelligence": 0,
-            "wisdom": 0,
-            "charisma": 0,
-            "dexterity": 0,
-            "luck": 0,
+            "strength": 0, "intelligence": 0, "wisdom": 0,
+            "charisma": 0, "dexterity": 0, "luck": 0
         }
 
         for e in effects:
-            for stat, value in e["modifiers"].items():
+            for stat, value in e.get("modifiers", {}).items():
                 mods[stat] += value
 
         return mods
 
-    def add_effect(self, name, duration_days, modifiers):
-        """Adds a buff or debuff lasting multiple days."""
-        today = datetime.now().date()
-        end_date = today + timedelta(days=duration_days)
+    def add_effect(self, name, effect_type, duration_hours, modifiers, icon="default"):
+        now = datetime.now()
+        expiry = now + timedelta(hours=duration_hours)
 
         effect = {
             "name": name,
+            "type": effect_type,   # buff | debuff
+            "start_at": now.strftime("%Y-%m-%d %H:%M"),
+            "expires_at": expiry.strftime("%Y-%m-%d %H:%M"),
             "modifiers": modifiers,
-            "start_date": today.strftime("%Y-%m-%d"),
-            "end_date": end_date.strftime("%Y-%m-%d")
+            "icon": icon
         }
 
         if "effects" not in self.data:
@@ -134,49 +112,92 @@ class StatsManager:
         return effect
 
     # ----------------------------------------------------------
-    # FINAL STATS (BASE + EMOTION + EFFECTS)
+    # CURSE SYSTEM — "BESO DE LA BRUJA"
+    # ----------------------------------------------------------
+    def curse_engine(self):
+        """Latent curse activation + intensity scaling."""
+        curse = self.data.get("curse", {})
+        emotion = self.data.get("emotion", {})
+
+        stress = emotion.get("stress", 0)
+        anxiety = emotion.get("anxiety", 0)
+        fatigue = emotion.get("fatigue", 0)
+
+        now = datetime.now()
+
+        # check cooldown
+        last = curse.get("last_trigger")
+        if last:
+            last_time = datetime.strptime(last, "%Y-%m-%d %H:%M")
+            cd_hours = curse.get("cooldown_hours", 12)
+            if now - last_time < timedelta(hours=cd_hours):
+                return  # still on cooldown
+
+        # probability of activation = based on emotional stressors
+        probability = 0
+
+        if stress > 70: probability += 30
+        if anxiety > 70: probability += 30
+        if fatigue > 60: probability += 15
+        if stress > 80 or anxiety > 80: probability += 40
+
+        # roll
+        roll = random.randint(1, 100)
+
+        if roll <= probability:
+            self.trigger_curse()
+            curse["last_trigger"] = now.strftime("%Y-%m-%d %H:%M")
+            self.save_memory()
+
+    def trigger_curse(self):
+        """Activate the Beso de la Bruja debuff."""
+        intensity = random.choice([1, 2, 3, 4])
+
+        modifiers = {
+            1: {"energy": -10, "motivation": -5, "clarity": -5},
+            2: {"energy": -15, "motivation": -8, "clarity": -7},
+            3: {"energy": -20, "motivation": -10, "clarity": -10},
+            4: {"energy": -25, "motivation": -15, "clarity": -12}
+        }[intensity]
+
+        # convert them into stat modifiers
+        stat_mods = {
+            "wisdom": -(2 if intensity >= 2 else 1),
+            "charisma": -1,
+            "intelligence": -1 if intensity >= 3 else 0
+        }
+
+        self.add_effect(
+            "Beso de la Bruja",
+            "debuff",
+            duration_hours=random.randint(12, 48),
+            modifiers=stat_mods,
+            icon="curse"
+        )
+
+        # apply raw emotion hits
+        emo = self.data["emotion"]
+        emo["motivation"] = max(0, emo["motivation"] + modifiers["motivation"])
+        emo["clarity"] = max(0, emo["clarity"] + modifiers["clarity"])
+        emo["fatigue"] = min(100, emo["fatigue"] + intensity * 5)
+
+        self.data["curse"]["active"] = True
+        self.data["curse"]["intensity"] = intensity
+        self.save_memory()
+
+    # ----------------------------------------------------------
+    # FINAL STATS = BASE + EMOTION MODS + EFFECT MODS
     # ----------------------------------------------------------
     def final_stats(self):
-        """Calculate real stats used by the player today."""
         base = self.base_stats()
-        emotion_mods = self.emotional_modifiers()
-        effect_mods = self.apply_effect_modifiers()
+        emo = self.emotional_modifiers()
+        eff = self.apply_effect_modifiers()
 
-        final_stats = {}
-
+        final = {}
         for stat, value in base.items():
             if stat in ["level", "exp", "exp_to_next_level", "energy", "max_energy"]:
-                final_stats[stat] = value
+                final[stat] = value
             else:
-                final_stats[stat] = value + emotion_mods.get(stat, 0) + effect_mods.get(stat, 0)
+                final[stat] = value + emo.get(stat, 0) + eff.get(stat, 0)
 
-        return final_stats
-
-    # ----------------------------------------------------------
-    # XP SYSTEM & LEVELING
-    # ----------------------------------------------------------
-    def add_exp(self, amount):
-        stats = self.data["stats"]
-        stats["exp"] += amount
-
-        # Level up logic
-        while stats["exp"] >= stats["exp_to_next_level"]:
-            stats["exp"] -= stats["exp_to_next_level"]
-            stats["level"] += 1
-            stats["exp_to_next_level"] = int(stats["exp_to_next_level"] * 1.25)
-
-            # Stat upgrade reward
-            stats["strength"] += 1
-            stats["wisdom"] += 1
-
-            print(f"🎉 LEVEL UP! You are now Level {stats['level']}")
-
-        self.save_memory()
-
-    # ----------------------------------------------------------
-    # ENERGY SYSTEM
-    # ----------------------------------------------------------
-    def change_energy(self, amount):
-        stats = self.data["stats"]
-        stats["energy"] = max(0, min(stats["energy"] + amount, stats["max_energy"]))
-        self.save_memory()
+        return final
