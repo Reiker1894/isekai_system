@@ -3,5 +3,7 @@ pillow
 pandas
 numpy
 python-dateutil
-modules.domains
-modules.curse
+sentence-transformers
+matplotlib
+reportlab
+markdown
