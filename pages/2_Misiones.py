@@ -66,17 +66,14 @@ st.markdown("""
 # -----------------------------------------------------------
 # HEADER
 # -----------------------------------------------------------
-st.markdown(
-    """
-    <h1 style='color:#9BB0FF;'>
-        📅 Misiones — Sistema Isekai de Aureon Nightweaver
-    </h1>
-    <h3 style='color:#7F88F7; margin-top:-10px;'>
-        Camino del Estratega • Progresión Diaria y Semanal
-    </h3>
-    """,
-    unsafe_allow_html=True
-)
+st.markdown("""
+<h1 style='color:#9BB0FF;'>
+    📅 Misiones — Sistema Isekai de Aureon Nightweaver
+</h1>
+<h3 style='color:#7F88F7; margin-top:-10px;'>
+    Camino del Estratega • Progresión Diaria y Semanal
+</h3>
+""", unsafe_allow_html=True)
 
 st.markdown("---")
 
@@ -99,7 +96,6 @@ with c2:
 
 st.markdown("---")
 
-
 # -----------------------------------------------------------
 # VISUALIZACIÓN DE MISIONES
 # -----------------------------------------------------------
@@ -120,6 +116,13 @@ for mtype, title in mission_types.items():
         continue
 
     for i, m in enumerate(data["missions"][mtype]):
+
+        # --------------------------------------------------------
+        # 🔧 Parche automático para misiones antiguas
+        # --------------------------------------------------------
+        if "reward_dark" not in m:
+            m["reward_dark"] = 0
+            missions.save_memory()
 
         color = (
             "#141624" if m["status"] == "pending"
@@ -144,7 +147,7 @@ for mtype, title in mission_types.items():
             )
 
             # ------------------------------------------------------
-            # BADGES
+            # BADGES (XP, DARK POINTS)
             # ------------------------------------------------------
             badge = f"""
             <span class='difficulty-badge'>
@@ -154,7 +157,7 @@ for mtype, title in mission_types.items():
                 🎁 EXP: {m['reward_exp']}
             </span>
             <span class='difficulty-badge'>
-                🌑 Dark Points: +{m['reward_dark', 0]}
+                🌑 Dark Points: +{m.get('reward_dark', 0)}
             </span>
             """
 
@@ -179,7 +182,6 @@ for mtype, title in mission_types.items():
                     st.experimental_rerun()
 
             st.markdown("</div>", unsafe_allow_html=True)
-
 
 # -----------------------------------------------------------
 # FALLOS AUTOMÁTICOS
