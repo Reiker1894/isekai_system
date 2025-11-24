@@ -154,7 +154,7 @@ for mtype, title in mission_types.items():
                 🎁 EXP: {m['reward_exp']}
             </span>
             <span class='difficulty-badge'>
-                🌑 Dark Points: +{m['reward_dark']}
+                🌑 Dark Points: +{m['reward_dark', 0]}
             </span>
             """
 
