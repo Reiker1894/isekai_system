@@ -175,48 +175,48 @@
       "entry": "Intento de energía baja; ataque leve del Beso de la Bruja."
     }
   ],
+
   "habits": {
-  "daily_log": {},
-  "definitions": [
-    {
-      "name": "Levantarse 5am",
-      "id": "wake_5am",
-      "days": ["Mon","Tue","Wed","Thu","Fri","Sat"],
-      "effects": {
-        "motivation": 5,
-        "clarity": 2,
-        "energy": 3
+    "daily_log": {},
+    "definitions": [
+      {
+        "name": "Levantarse 5am",
+        "id": "wake_5am",
+        "days": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        "effects": {
+          "motivation": 5,
+          "clarity": 2,
+          "energy": 3
+        }
+      },
+      {
+        "name": "Dormir 7-8h",
+        "id": "sleep_8h",
+        "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+        "effects": {
+          "energy": 10,
+          "fatigue": -10,
+          "clarity": 5
+        }
+      },
+      {
+        "name": "Practicar Inglés 1h",
+        "id": "english_1h",
+        "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+        "effects": {
+          "intelligence": 1,
+          "domains": {"academia": 5}
+        }
+      },
+      {
+        "name": "Leer 1h",
+        "id": "read_1h",
+        "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+        "effects": {
+          "intelligence": 1,
+          "domains": {"academia": 5}
+        }
       }
-    },
-    {
-      "name": "Dormir 7-8h",
-      "id": "sleep_8h",
-      "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
-      "effects": {
-        "energy": 10,
-        "fatigue": -10,
-        "clarity": 5
-      }
-    },
-    {
-      "name": "Practicar Inglés 1h",
-      "id": "english_1h",
-      "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
-      "effects": {
-        "intelligence": 1,
-        "domains": {"academia": 5}
-      }
-    },
-    {
-      "name": "Leer 1h",
-      "id": "read_1h",
-      "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
-      "effects": {
-        "intelligence": 1,
-        "domains": {"academia": 5}
-      }
-    }
-  ]
+    ]
+  }
 }
-
-
