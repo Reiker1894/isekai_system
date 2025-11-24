@@ -148,36 +148,56 @@ for idx, stat in enumerate(stat_names):
             unsafe_allow_html=True
         )
 
-# -----------------------------------------------------------
+# --------------------------
 # ESTADO EMOCIONAL
-# -----------------------------------------------------------
-st.markdown("---")
+# --------------------------
 st.markdown("## 🧠 Estado Emocional")
 
 emotion = stats.data.get("emotion", {})
 
-emo_cols = st.columns(6)
+# Diccionario de colores por emoción
+emotion_colors = {
+    "stress": "#FF6B6B",
+    "anxiety": "#FF9B6B",
+    "motivation": "#6BFF95",
+    "clarity": "#6BBFFF",
+    "fatigue": "#FFDE6B"
+}
 
-for idx, (key, value) in enumerate(emotion.items()):
-    if key == "notes":
+for key, value in emotion.items():
+    if key == "notes" or key == "mood":
         continue
 
-    color = "#A8C0FF"
-    # Asegurar que value sea un número
+    # Asegurar que value sea número
     try:
         val = float(value)
     except:
-        val = 50  # valor neutral por defecto
-    
-    if value > 70:
-        color = "#FF7C7C"
-    elif value < 30:
-        color = "#7CFF7C"
-    else:
-        color = "#A8C0FF"
+        val = 50
 
-    with emo_cols[idx % 6]:
-        st.metric(label=key.capitalize(), value=value)
+    # Determinar color según el valor
+    if val > 70:
+        ring_color = "#FF6B6B"       # alto
+    elif val < 30:
+        ring_color = "#6BFF95"       # bajo
+    else:
+        ring_color = "#A8C0FF"       # normal
+
+    st.markdown(
+        f"""
+        <div style='margin-bottom:20px;'>
+            <h4 style='color:white;'>{key.capitalize()}</h4>
+            <div style="background-color:#2A2D40; height:20px; border-radius:10px;">
+                <div style="width:{val}%; height:20px; background-color:{ring_color}; border-radius:10px;"></div>
+            </div>
+            <p style='color:#A8C0FF; margin-top:5px;'>Valor actual: {val}</p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+# Notas y mood
+st.markdown(f"**Mood actual:** {emotion.get('mood', 'neutral')}")
+st.markdown(f"**Notas:** {emotion.get('notes', '')}")
 
 # -----------------------------------------------------------
 # MISIONES ACTIVAS
