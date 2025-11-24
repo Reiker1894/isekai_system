@@ -38,25 +38,38 @@
   },
 
   "bosses": {
-    "current_boss": "Beso de la Bruja",
-    "boss_hp": 72,
-    "boss_difficulty": 3,
-    "boss_type": "emotional"
+    "name": "Beso de la Bruja",
+    "phase": 1,
+    "current_hp": 72,
+    "total_phases": 3,
+    "difficulty": 3,
+    "type": "emotional"
   },
 
   "world": {
-    "reputation": {
-      "politics": 12,
-      "academia": 18,
-      "consulting": 8,
-      "family": 7
+    "realms": {
+      "politics": {
+        "progress": 18,
+        "reputation": 12,
+        "difficulty": 3
+      },
+      "academia": {
+        "progress": 22,
+        "reputation": 18,
+        "difficulty": 2
+      },
+      "consulting": {
+        "progress": 10,
+        "reputation": 8,
+        "difficulty": 3
+      },
+      "family": {
+        "progress": 15,
+        "reputation": 7,
+        "difficulty": 2
+      }
     },
-    "factions": {
-      "Mercor": "Pending",
-      "BID": "Long-term",
-      "CAF": "Medium-term",
-      "Current Job": "Stagnation"
-    }
+    "events": []
   },
 
   "logs": [
@@ -64,5 +77,8 @@
       "date": "2025-11-24",
       "entry": "Intento de energía baja; ataque leve del Beso de la Bruja."
     }
+  ]
+}
+
   ]
 }
