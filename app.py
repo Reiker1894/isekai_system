@@ -163,10 +163,18 @@ for idx, (key, value) in enumerate(emotion.items()):
         continue
 
     color = "#A8C0FF"
+    # Asegurar que value sea un número
+    try:
+        val = float(value)
+    except:
+        val = 50  # valor neutral por defecto
+    
     if value > 70:
         color = "#FF7C7C"
     elif value < 30:
         color = "#7CFF7C"
+    else:
+        color = "#A8C0FF"
 
     with emo_cols[idx % 6]:
         st.metric(label=key.capitalize(), value=value)
