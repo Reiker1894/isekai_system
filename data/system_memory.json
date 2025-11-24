@@ -1,81 +1,91 @@
 {
-  "stats": {
-    "level": 8,
-    "exp": 230,
-    "exp_to_next_level": 300,
-    "strength": 4,
-    "intelligence": 9,
-    "wisdom": 6,
-    "charisma": 7,
-    "dexterity": 5,
-    "luck": 3,
-    "energy": 52,
-    "max_energy": 100
-  },
-
-  "emotion": {
-    "mood": "neutral",
-    "stress": 40,
-    "anxiety": 35,
-    "motivation": 60,
-    "clarity": 55,
-    "fatigue": 30,
-    "notes": "Ataque leve de la maldición, pero avanzado en Mercor."
-  },
-
-  "economy": {
-    "savings": 0,
-    "monthly_income": 6100000,
-    "monthly_expenses": 5000000,
-    "debt": 180000000
-  },
-
-  "missions": {
-    "daily": [],
-    "weekly": [],
-    "main_quest": {},
-    "side_quests": []
-  },
-
-  "bosses": {
-    "name": "Beso de la Bruja",
-    "phase": 1,
-    "current_hp": 72,
-    "total_phases": 3,
-    "difficulty": 3,
-    "type": "emotional"
-  },
-
-  "world": {
-    "realms": {
-      "politics": {
-        "progress": 18,
-        "reputation": 12,
-        "difficulty": 3
-      },
-      "academia": {
-        "progress": 22,
-        "reputation": 18,
-        "difficulty": 2
-      },
-      "consulting": {
-        "progress": 10,
-        "reputation": 8,
-        "difficulty": 3
-      },
-      "family": {
-        "progress": 15,
-        "reputation": 7,
-        "difficulty": 2
-      }
+    "stats": {
+        "level": 8,
+        "exp": 230,
+        "exp_to_next_level": 300,
+        "strength": 4,
+        "intelligence": 9,
+        "wisdom": 6,
+        "charisma": 7,
+        "dexterity": 5,
+        "luck": 3,
+        "energy": 52,
+        "max_energy": 100
     },
-    "events": []
-  },
 
-  "logs": [
-    {
-      "date": "2025-11-24",
-      "entry": "Intento de energía baja; ataque leve del Beso de la Bruja."
-    }
-  ]
+    "emotion": {
+        "mood": "neutral",
+        "stress": 40,
+        "anxiety": 35,
+        "motivation": 60,
+        "clarity": 55,
+        "fatigue": 30,
+        "notes": "Ataque leve de la maldición, pero avanzado en Mercor."
+    },
+
+    "economy": {
+        "savings": 0,
+        "monthly_income": 6100000,
+        "monthly_expenses": 5000000,
+        "debt": 180000000
+    },
+
+    "missions": {
+        "daily": [],
+        "weekly": [],
+        "main_quest": {},
+        "side_quests": []
+    },
+
+    "bosses": {
+        "name": "Beso de la Bruja",
+        "phase": 1,
+        "current_hp": 72,
+        "total_phases": 3,
+        "difficulty": 3,
+        "type": "emotional"
+    },
+
+    "world": {
+        "realms": {
+            "politics": {
+                "progress": 18,
+                "reputation": 12,
+                "difficulty": 3
+            },
+            "academia": {
+                "progress": 22,
+                "reputation": 18,
+                "difficulty": 2
+            },
+            "consulting": {
+                "progress": 10,
+                "reputation": 8,
+                "difficulty": 3
+            },
+            "family": {
+                "progress": 15,
+                "reputation": 7,
+                "difficulty": 2
+            }
+        },
+        "events": []
+    },
+
+    "effects": [],
+
+    "curse": {
+        "name": "Beso de la Bruja",
+        "active": false,
+        "intensity": 1,
+        "last_trigger": null,
+        "cooldown_hours": 12
+    },
+
+    "logs": [
+        {
+            "date": "2025-11-24",
+            "entry": "Intento de energía baja; ataque leve del Beso de la Bruja."
+        }
+    ]
 }
