@@ -1,5 +1,5 @@
-streamlit==1.37.0
-pillow==10.3.0
-pandas==2.2.2
-numpy==1.26.4
-python-dateutil==2.9.0
+streamlit
+pillow
+pandas
+numpy
+python-dateutil
