@@ -1,190 +1,184 @@
 import streamlit as st
 from modules.stats import StatsManager
-from modules.bosses import BossManager
-from modules.world import WorldManager
-from modules.memory import MemoryManager
-import json
+from datetime import datetime, timedelta
 
 st.set_page_config(
-    page_title="Admin — Aureon Nightweaver",
+    page_title="Administración del Sistema — Aureon",
     layout="wide"
 )
 
 stats = StatsManager()
-boss = BossManager()
-world = WorldManager()
-memory = MemoryManager()
+effects = stats.active_effects()
+curse = stats.data.get("curse", {})
 
-# -----------------------------------------------------------
-# TITULO
-# -----------------------------------------------------------
-st.markdown(
-    """
-    <h1 style='color:#FF9999;'>⚙️ Panel Administrativo</h1>
-    <h3 style='color:#FFCCCC; margin-top:-10px;'>
-        Control total del Sistema — SOLO PARA AUREON NIGHTWEAVER
-    </h3>
-    """,
-    unsafe_allow_html=True
-)
+# ----------------------------------------------
+# CSS estilo Solo Leveling
+# ----------------------------------------------
+st.markdown("""
+<style>
+    .sl-card {
+        background: #141624;
+        padding: 20px;
+        border-radius: 12px;
+        border: 1px solid #24283F;
+        box-shadow: 0 0 25px rgba(80, 100, 255, 0.10);
+        margin-bottom: 20px;
+    }
 
-st.warning("⚠ Esta sección permite modificar directamente variables del sistema. Úsala con sabiduría.")
+    .sl-title {
+        font-size: 26px;
+        font-weight: 700;
+        color: #7F97FF;
+        margin-bottom: 15px;
+    }
 
-# -----------------------------------------------------------
-# EDITAR STATS
-# -----------------------------------------------------------
-st.markdown("## 🧬 Editar Stats del Personaje")
+    .effect-card {
+        padding: 15px;
+        border-radius: 12px;
+        margin-bottom: 12px;
+        background: #131521;
+        border: 1px solid #2F3250;
+        box-shadow: 0 0 18px rgba(100, 120, 255, 0.10);
+    }
 
-col1, col2, col3 = st.columns(3)
+    .buff {
+        border-left: 4px solid #4A77FF;
+    }
 
-with col1:
-    for stat in ["strength", "intelligence", "wisdom"]:
-        new_val = st.number_input(f"{stat.capitalize()}", 0, 99, stats.data["stats"].get(stat, 10))
-        if st.button(f"Guardar {stat}"):
-            stats.data["stats"][stat] = new_val
-            stats.save_memory()
-            st.success(f"{stat} actualizado.")
+    .debuff {
+        border-left: 4px solid #A840FF;
+    }
 
-with col2:
-    for stat in ["charisma", "dexterity", "luck"]:
-        new_val = st.number_input(f"{stat.capitalize()}", 0, 99, stats.data["stats"].get(stat, 10), key=f"stat_{stat}")
-        if st.button(f"Guardar {stat}", key=f"save_{stat}"):
-            stats.data["stats"][stat] = new_val
-            stats.save_memory()
-            st.success(f"{stat} actualizado.")
+    .curse-icon {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: radial-gradient(circle, #B35CFF 0%, #6D1FBF 70%);
+        animation: pulse_purple 2.2s infinite;
+        display: inline-block;
+        margin-right: 10px;
+    }
 
-with col3:
-    energy = st.number_input("Energía", 0, 200, stats.data["stats"]["energy"])
-    max_energy = st.number_input("Máx Energía", 10, 200, stats.data["stats"]["max_energy"])
+    @keyframes pulse_purple {
+        0% { box-shadow: 0 0 10px #7B2FFF; }
+        50% { box-shadow: 0 0 25px #B35CFF; }
+        100% { box-shadow: 0 0 10px #7B2FFF; }
+    }
 
-    if st.button("Guardar Energía"):
-        stats.data["stats"]["energy"] = energy
-        stats.data["stats"]["max_energy"] = max_energy
-        stats.save_memory()
-        st.success("Energía actualizada.")
+</style>
+""", unsafe_allow_html=True)
 
-# -----------------------------------------------------------
-# EDITAR EMOCIONES
-# -----------------------------------------------------------
+st.markdown("<h1 style='color:#A8C0FF;'>⚙️ Administración del Sistema Isekai</h1>", unsafe_allow_html=True)
 st.markdown("---")
-st.markdown("## 🧠 Editar Estado Emocional")
 
-emotion = stats.data.get("emotion", {})
+# ==========================================================
+# SECTION 1 — EFECTOS ACTIVOS
+# ==========================================================
+st.markdown("<div class='sl-title'>✨ Efectos Activos</div>", unsafe_allow_html=True)
 
-for key, value in emotion.items():
-    if key != "notes":
-        new_value = st.slider(key, 0, 100, value)
-        emotion[key] = new_value
-
-emotion["notes"] = st.text_area("Notas del estado emocional", emotion.get("notes", ""))
-
-if st.button("Guardar Emociones"):
-    stats.data["emotion"] = emotion
-    stats.save_memory()
-    st.success("Estado emocional actualizado.")
-
-# -----------------------------------------------------------
-# CONTROL DEL BOSS
-# -----------------------------------------------------------
-st.markdown("---")
-st.markdown("## 👹 Control del Boss")
-
-boss_data = boss.get_current_boss()
-
-if boss_data:
-    st.write(f"Boss actual: **{boss_data['name']}** — Fase {boss_data['phase']}")
-    new_hp = st.number_input("HP del Boss", 0, 200, boss_data["current_hp"])
-
-    if st.button("Guardar HP"):
-        boss_data["current_hp"] = new_hp
-        boss.save_memory()
-        st.success("HP actualizado.")
-
-    if st.button("Eliminar Boss Actual"):
-        boss.data["bosses"] = {}
-        boss.save_memory()
-        st.warning("Boss eliminado.")
-        st.experimental_rerun()
-
+if len(effects) == 0:
+    st.info("No hay efectos activos.")
 else:
-    st.info("No hay boss activo.")
+    for e in effects:
+        effect_class = "buff" if e["type"] == "buff" else "debuff"
+        st.markdown(f"""
+            <div class="effect-card {effect_class}">
+                <strong style="color:white;">{e['name']}</strong><br>
+                <span style="color:#A8C0FF;">Tipo: {e['type']}</span><br>
+                <span style="color:#7F8CFF;">Inicia: {e['start_at']}</span><br>
+                <span style="color:#7F8CFF;">Expira: {e['expires_at']}</span><br>
+                <span style="color:#6F7FFF;">Modificadores: {e['modifiers']}</span>
+            </div>
+        """, unsafe_allow_html=True)
 
-# -----------------------------------------------------------
-# CONTROL DEL MUNDO
-# -----------------------------------------------------------
-st.markdown("---")
-st.markdown("## 🌍 Control del Mundo")
-
-realms = world.data.get("world", {}).get("realms", {})
-
-for realm, info in realms.items():
-    st.subheader(realm.capitalize())
-    colA, colB, colC = st.columns(3)
-
-    with colA:
-        progress = st.number_input(
-            f"Progreso ({realm})", 0, 100, info["progress"],
-            key=f"progress_{realm}"
-        )
-    with colB:
-        rep = st.number_input(
-            f"Reputación ({realm})", 0, 100, info["reputation"],
-            key=f"rep_{realm}"
-        )
-    with colC:
-        difficulty = st.number_input(
-            f"Dificultad ({realm})", 1, 5, info["difficulty"],
-            key=f"diff_{realm}"
-        )
-
-    if st.button(f"Guardar cambios en {realm}", key=f"save_{realm}"):
-        realms[realm]["progress"] = progress
-        realms[realm]["reputation"] = rep
-        realms[realm]["difficulty"] = difficulty
-        world.save_memory()
-        st.success(f"Reino {realm} actualizado.")
-
-# -----------------------------------------------------------
-# BOTONES AVANZADOS
-# -----------------------------------------------------------
-st.markdown("---")
-st.markdown("## 🔥 Acciones Avanzadas")
-
-colX, colY = st.columns(2)
-
-with colX:
-    if st.button("🧹 Limpiar TODOS los eventos"):
-        world.data["events"] = []
-        world.save_memory()
-        st.warning("Todos los eventos eliminados.")
-
-    if st.button("🧨 Reset Total del Mundo"):
-        world.data["world"]["realms"] = world.define_world()
-        world.save_memory()
-        st.error("Mundo reiniciado a estado base.")
-
-with colY:
-    if st.button("🗑 Eliminar TODOS los buffs y debuffs"):
+    if st.button("🗑 Eliminar TODOS los efectos activos"):
         stats.data["effects"] = []
         stats.save_memory()
-        st.success("Todos los efectos eliminados.")
+        st.success("Todos los efectos han sido eliminados.")
 
-    if st.button("🔄 Restauración limpia del sistema"):
-        stats.data["effects"] = []
-        stats.data["emotion"] = {k: 50 for k in stats.data["emotion"].keys()}
-        world.data["events"] = []
-        boss.data["bosses"] = {}
-        stats.save_memory()
-        world.save_memory()
-        boss.save_memory()
-        memory.auto_backup()
-        st.error("Sistema reseteado a estado neutral.")
 
-# -----------------------------------------------------------
-# VER JSON CRUDO
-# -----------------------------------------------------------
 st.markdown("---")
-st.markdown("## 🧾 Ver Memoria Cruda (JSON)")
 
-with st.expander("Mostrar JSON Completo"):
-    st.json(memory.load_memory())
+
+# ==========================================================
+# SECTION 2 — AÑADIR BUFFS RÁPIDOS
+# ==========================================================
+st.markdown("<div class='sl-title'>🔥 Añadir Buff Rápido</div>", unsafe_allow_html=True)
+
+buffs = {
+    "Claridad Elevada": {"wisdom": 2, "intelligence": 2},
+    "Foco del Estratega": {"wisdom": 3, "intelligence": 3},
+    "Impulso de Progreso": {"dexterity": 2, "luck": 1},
+    "Mente de Acero": {"charisma": 2},
+    "Inspiración del Fénix": {"charisma": 2, "wisdom": 1}
+}
+
+buff_name = st.selectbox("Selecciona un Buff", list(buffs.keys()))
+buff_duration = st.slider("Duración (horas)", 1, 48, 8)
+
+if st.button("➕ Activar Buff"):
+    stats.add_effect(buff_name, "buff", buff_duration, buffs[buff_name])
+    st.success(f"Buff '{buff_name}' activado.")
+
+
+st.markdown("---")
+
+
+# ==========================================================
+# SECTION 3 — AÑADIR DEBUFFS RÁPIDOS
+# ==========================================================
+st.markdown("<div class='sl-title'>🌑 Añadir Debuff Rápido</div>", unsafe_allow_html=True)
+
+debuffs = {
+    "Fatiga Crónica": {"wisdom": -2, "strength": -2},
+    "Niebla Mental": {"intelligence": -3},
+    "Drenaje Emocional": {"charisma": -2},
+    "Carga del Mundo": {"wisdom": -2, "charisma": -1}
+}
+
+debuff_name = st.selectbox("Selecciona un Debuff", list(debuffs.keys()))
+debuff_duration = st.slider("Duración (horas)", 1, 48, 12)
+
+if st.button("➕ Activar Debuff"):
+    stats.add_effect(debuff_name, "debuff", debuff_duration, debuffs[debuff_name])
+    st.error(f"Debuff '{debuff_name}' activado.")
+
+
+st.markdown("---")
+
+
+# ==========================================================
+# SECTION 4 — ACTIVAR MANUALMENTE EL BESO DE LA BRUJA
+# ==========================================================
+st.markdown("<div class='sl-title'>🩸 Activar Beso de la Bruja (Manual)</div>", unsafe_allow_html=True)
+
+if st.button("⚠️ Forzar Activación de la Maldición"):
+    stats.trigger_curse()
+    st.error("La Maldición 'Beso de la Bruja' ha sido activada manualmente.")
+
+
+st.markdown("---")
+
+
+# ==========================================================
+# SECTION 5 — CREAR EFECTO PERSONALIZADO
+# ==========================================================
+st.markdown("<div class='sl-title'>🧪 Crear Efecto Personalizado</div>", unsafe_allow_html=True)
+
+custom_name = st.text_input("Nombre del efecto")
+custom_type = st.selectbox("Tipo", ["buff", "debuff"])
+custom_duration = st.slider("Duración (horas)", 1, 72, 12)
+custom_mods = st.text_area("Modificadores (ejemplo: strength:2, wisdom:-1)")
+
+if st.button("➕ Crear Efecto"):
+    try:
+        mod_dict = {}
+        for pair in custom_mods.split(","):
+            stat, value = pair.split(":")
+            mod_dict[stat.strip()] = int(value.strip())
+
+        stats.add_effect(custom_name, custom_type, custom_duration, mod_dict)
+        st.success("Efecto personalizado creado.")
+    except:
+        st.error("Error en el formato de modificadores. Usa: stat:valor, stat:valor")
+
