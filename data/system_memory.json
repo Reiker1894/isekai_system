@@ -60,7 +60,8 @@
         "10": "Ingresar a un partido político",
         "15": "Cargo o rol político real"
       },
-      "unlocked": []
+      "unlocked": [],
+      "weekly_dynamic_milestones": []
     },
 
     "academia": {
@@ -76,7 +77,8 @@
         "10": "Defensa exitosa",
         "15": "Beca o publicación"
       },
-      "unlocked": []
+      "unlocked": [],
+      "weekly_dynamic_milestones": []
     },
 
     "consulting": {
@@ -92,7 +94,8 @@
         "10": "Freelancer estable",
         "15": "Consultor senior"
       },
-      "unlocked": []
+      "unlocked": [],
+      "weekly_dynamic_milestones": []
     },
 
     "finance": {
@@ -108,7 +111,8 @@
         "10": "80M ahorrados",
         "15": "160M ahorrados"
       },
-      "unlocked": []
+      "unlocked": [],
+      "weekly_dynamic_milestones": []
     },
 
     "family": {
@@ -124,7 +128,8 @@
         "10": "Relación estable",
         "15": "Armonía familiar total"
       },
-      "unlocked": []
+      "unlocked": [],
+      "weekly_dynamic_milestones": []
     }
   },
 
@@ -136,26 +141,10 @@
 
   "world": {
     "realms": {
-      "politics": {
-        "progress": 18,
-        "reputation": 12,
-        "difficulty": 3
-      },
-      "academia": {
-        "progress": 22,
-        "reputation": 18,
-        "difficulty": 2
-      },
-      "consulting": {
-        "progress": 10,
-        "reputation": 8,
-        "difficulty": 3
-      },
-      "family": {
-        "progress": 15,
-        "reputation": 7,
-        "difficulty": 2
-      }
+      "politics": { "progress": 18, "reputation": 12, "difficulty": 3 },
+      "academia": { "progress": 22, "reputation": 18, "difficulty": 2 },
+      "consulting": { "progress": 10, "reputation": 8, "difficulty": 3 },
+      "family": { "progress": 15, "reputation": 7, "difficulty": 2 }
     },
     "events": []
   },
@@ -173,26 +162,11 @@
   "dark_points": 0,
 
   "reward_store": [
-    {
-      "name": "🍺 Salir a tomar cervezas",
-      "cost": 1000
-    },
-    {
-      "name": "🍝 Salir a cenar",
-      "cost": 2000
-    },
-    {
-      "name": "📚 Comprar un libro",
-      "cost": 1500
-    },
-    {
-      "name": "☕ Café premium",
-      "cost": 300
-    },
-    {
-      "name": "🎁 Comprarte algo pequeño",
-      "cost": 500
-    }
+    { "name": "🍺 Salir a tomar cervezas", "cost": 1000 },
+    { "name": "🍝 Salir a cenar", "cost": 2000 },
+    { "name": "📚 Comprar un libro", "cost": 1500 },
+    { "name": "☕ Café premium", "cost": 300 },
+    { "name": "🎁 Comprarte algo pequeño", "cost": 500 }
   ],
 
   "logs": [
