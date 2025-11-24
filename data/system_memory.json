@@ -46,6 +46,94 @@
     "type": "emotional"
   },
 
+  "domains": {
+    "politics": {
+      "name": "Política",
+      "level": 1,
+      "exp": 0,
+      "exp_to_next": 100,
+      "milestones": {
+        "1": "Primer análisis político",
+        "3": "Contacto con experto o líder",
+        "5": "Participar en un foro",
+        "8": "Networking avanzado",
+        "10": "Ingresar a un partido político",
+        "15": "Cargo o rol político real"
+      },
+      "unlocked": []
+    },
+
+    "academia": {
+      "name": "Academia",
+      "level": 1,
+      "exp": 0,
+      "exp_to_next": 100,
+      "milestones": {
+        "1": "Rutina mínima de estudio",
+        "3": "Consistencia semanal",
+        "5": "Terminas el semestre",
+        "8": "Tesis avanzada",
+        "10": "Defensa exitosa",
+        "15": "Beca o publicación"
+      },
+      "unlocked": []
+    },
+
+    "consulting": {
+      "name": "Consultoría",
+      "level": 1,
+      "exp": 0,
+      "exp_to_next": 100,
+      "milestones": {
+        "1": "Actualizas tu CV",
+        "3": "Primer avance en Mercor",
+        "5": "Perfil optimizado",
+        "8": "Primer contrato o consultoría",
+        "10": "Freelancer estable",
+        "15": "Consultor senior"
+      },
+      "unlocked": []
+    },
+
+    "finance": {
+      "name": "Finanzas",
+      "level": 1,
+      "exp": 0,
+      "exp_to_next": 100,
+      "milestones": {
+        "1": "Ahorro inicial 1.2M",
+        "3": "10M ahorrados",
+        "5": "20M ahorrados",
+        "8": "40M ahorrados",
+        "10": "80M ahorrados",
+        "15": "160M ahorrados"
+      },
+      "unlocked": []
+    },
+
+    "family": {
+      "name": "Familia",
+      "level": 1,
+      "exp": 0,
+      "exp_to_next": 100,
+      "milestones": {
+        "1": "Llamada a mamá/papá",
+        "3": "Encuentro familiar",
+        "5": "Fin de semana juntos",
+        "8": "Sanación emocional",
+        "10": "Relación estable",
+        "15": "Armonía familiar total"
+      },
+      "unlocked": []
+    }
+  },
+
+  "map": {
+    "active_zones": [],
+    "discovered_zones": [],
+    "last_update": null
+  },
+
   "world": {
     "realms": {
       "politics": {
