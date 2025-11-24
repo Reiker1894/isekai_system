@@ -10,15 +10,68 @@ missions = MissionManager()
 stats = StatsManager()
 memory = MemoryManager()
 
+data = missions.data
+
 # -----------------------------------------------------------
-# TÍTULO
+# SOLO LEVELING CSS
+# -----------------------------------------------------------
+st.markdown("""
+<style>
+
+    .mission-card {
+        background: #141624;
+        padding: 18px;
+        border-radius: 10px;
+        border: 1px solid #1F2236;
+        margin-bottom: 12px;
+        box-shadow: 0px 0px 15px rgba(80,100,255,0.07);
+    }
+
+    .mission-title {
+        font-size: 21px;
+        color: #A9B9FF;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .mission-info {
+        color: #DADFFF; 
+        font-size: 15px;
+        margin-bottom: 4px;
+    }
+
+    .difficulty-badge {
+        background: #1f1f32;
+        padding: 4px 10px;
+        border-radius: 8px;
+        color: #9AA4FF;
+        font-size: 13px;
+        font-weight: bold;
+        border: 1px solid #2A2E45;
+        margin-right: 8px;
+    }
+
+    .reward-box {
+        background: #10121f;
+        border: 1px solid #22263A;
+        padding: 8px;
+        border-radius: 8px;
+        margin-top: 4px;
+        color: #A7B3FF;
+    }
+
+</style>
+""", unsafe_allow_html=True)
+
+# -----------------------------------------------------------
+# HEADER
 # -----------------------------------------------------------
 st.markdown(
     """
     <h1 style='color:#9BB0FF;'>
-        📅 Misiones del Sistema — Aureon Nightweaver
+        📅 Misiones — Sistema Isekai de Aureon Nightweaver
     </h1>
-    <h3 style='color:#7B88F7; margin-top:-10px;'>
+    <h3 style='color:#7F88F7; margin-top:-10px;'>
         Camino del Estratega • Progresión Diaria y Semanal
     </h3>
     """,
@@ -30,132 +83,152 @@ st.markdown("---")
 # -----------------------------------------------------------
 # GENERAR MISIONES
 # -----------------------------------------------------------
-st.markdown("## ⚡ Generar Misiones")
+st.subheader("⚡ Generar Misiones Automáticas")
 
-col_gen1, col_gen2 = st.columns(2)
+c1, c2 = st.columns(2)
 
-with col_gen1:
+with c1:
     if st.button("🎯 Generar Misiones Diarias"):
         missions.generate_daily_missions()
-        st.success("Misiones diarias generadas.")
+        st.success("Misiones diarias generadas correctamente.")
 
-with col_gen2:
+with c2:
     if st.button("📆 Generar Misiones Semanales"):
         missions.generate_weekly_missions()
-        st.success("Misiones semanales generadas.")
+        st.success("Misiones semanales generadas correctamente.")
+
+st.markdown("---")
+
 
 # -----------------------------------------------------------
-# MOSTRAR MISIONES POR CATEGORÍA
+# VISUALIZACIÓN DE MISIONES
 # -----------------------------------------------------------
-st.markdown("---")
-st.markdown("## 📘 Misiones Activas")
+st.subheader("📘 Misiones Activas")
 
 mission_types = {
     "daily": "🟦 Diarias",
     "weekly": "🟨 Semanales",
-    "side_quests": "🟪 Secundarias",
-    "main_quest": "🟥 Misión Principal"
+    "side_quests": "🟪 Secundarias"
 }
 
-data = stats.data["missions"]
-
-# DAILY & WEEKLY
 for mtype, title in mission_types.items():
-    st.markdown(f"### {title}")
 
-    if mtype in ["daily", "weekly", "side_quests"]:
-        if len(data[mtype]) == 0:
-            st.info("No hay misiones en esta categoría.")
-        else:
-            for i, m in enumerate(data[mtype]):
-                box_color = "#1b1b2e" if m["status"] == "pending" else "#233"
-                with st.expander(f"{m['title']}"):
-                    st.markdown(
-                        f"""
-                        <div style="background-color:{box_color}; padding:12px; border-radius:8px;">
-                            <b>Descripción:</b> {m['description']}<br>
-                            <b>Dificultad:</b> {m['difficulty']}<br>
-                            <b>Recompensa:</b> {m['reward_exp']} XP<br>
-                            <b>Estado:</b> {m['status']}<br>
-                            <b>Deadline:</b> {m['deadline']}<br>
-                        </div>
-                        """,
-                        unsafe_allow_html=True
-                    )
+    st.markdown(f"## {title}")
 
-                    if m["status"] == "pending":
-                        if st.button(f"✔ Completar Misión {i} ({mtype})"):
-                            missions.complete_mission(mtype, i)
-                            st.success("¡Misión completada!")
-                            st.experimental_rerun()
+    if len(data["missions"][mtype]) == 0:
+        st.info("No hay misiones en esta categoría.")
+        continue
 
-    # MAIN QUEST
-    if mtype == "main_quest":
-        if data["main_quest"] == {}:
-            st.info("No hay misión principal activa.")
-        else:
-            m = data["main_quest"]
-            with st.expander(f"🟥 {m['title']}"):
-                st.write(m)
-                if m["status"] == "pending":
-                    if st.button("🔥 Completar Misión Principal"):
-                        m["status"] = "completed"
-                        stats.save_memory()
-                        st.success("¡Misión principal completada!")
+    for i, m in enumerate(data["missions"][mtype]):
+
+        color = (
+            "#141624" if m["status"] == "pending"
+            else "#132018" if m["status"] == "completed"
+            else "#2B1A1A"
+        )
+
+        with st.container():
+            st.markdown(f"<div class='mission-card' style='background:{color};'>", unsafe_allow_html=True)
+
+            # ------------------------------------------------------
+            # HEADER
+            # ------------------------------------------------------
+            st.markdown(
+                f"<div class='mission-title'>{m['title']}</div>",
+                unsafe_allow_html=True
+            )
+
+            st.markdown(
+                f"<div class='mission-info'><b>Descripción:</b> {m['description']}</div>",
+                unsafe_allow_html=True
+            )
+
+            # ------------------------------------------------------
+            # BADGES
+            # ------------------------------------------------------
+            badge = f"""
+            <span class='difficulty-badge'>
+                🗡️ Dificultad: {m['difficulty']}
+            </span>
+            <span class='difficulty-badge'>
+                🎁 EXP: {m['reward_exp']}
+            </span>
+            <span class='difficulty-badge'>
+                🌑 Dark Points: +{m['reward_dark']}
+            </span>
+            """
+
+            st.markdown(badge, unsafe_allow_html=True)
+
+            # ------------------------------------------------------
+            # DEADLINE + STATUS
+            # ------------------------------------------------------
+            st.markdown(
+                f"<div class='reward-box'><b>⏳ Deadline:</b> {m['deadline']}<br>"
+                f"<b>📌 Estado:</b> {m['status']}</div>",
+                unsafe_allow_html=True
+            )
+
+            # ------------------------------------------------------
+            # BOTÓN COMPLETAR
+            # ------------------------------------------------------
+            if m["status"] == "pending":
+                if st.button(f"✔ Completar «{m['title']}»", key=f"{mtype}_{i}"):
+                    missions.complete_mission(mtype, i)
+                    st.success("¡Misión completada! Recompensas aplicadas.")
+                    st.experimental_rerun()
+
+            st.markdown("</div>", unsafe_allow_html=True)
+
 
 # -----------------------------------------------------------
-# MISIONES FALLIDAS AUTOMÁTICAMENTE
+# FALLOS AUTOMÁTICOS
 # -----------------------------------------------------------
 st.markdown("---")
-st.markdown("## ❌ Misiones Fallidas por Deadline")
+st.subheader("❌ Misiones Fallidas Automáticamente")
 
 failed = missions.fail_expired_missions()
 
 if failed:
     for m in failed:
-        st.error(f"Misión fallida: {m['title']} — {m['deadline']}")
+        st.error(f"⚠ {m['title']} — Deadline: {m['deadline']}")
 else:
-    st.info("No hay misiones vencidas por ahora.")
+    st.info("No hay misiones vencidas.")
 
 # -----------------------------------------------------------
 # CREAR MISIÓN MANUAL
 # -----------------------------------------------------------
 st.markdown("---")
-st.markdown("## ➕ Crear Nueva Misión Manual")
+st.subheader("➕ Crear Misión Manual")
 
-title = st.text_input("Título de la misión")
+title = st.text_input("Título")
 desc = st.text_area("Descripción")
-difficulty = st.slider("Dificultad", 1, 4, 2)
-reward = st.number_input("Recompensa (XP)", 10, 500, 50)
+base_diff = st.slider("Dificultad Base (antes de ajustes del sistema)", 1, 4, 2)
 mtype = st.selectbox("Tipo", ["daily", "weekly", "side_quests"])
-deadline_days = st.number_input("Días para el deadline", 1, 30, 1)
+deadline_days = st.number_input("Días para deadline", 1, 30, 1)
 
-if st.button("Crear Misión"):
-    missions.create_mission(title, desc, mtype, difficulty, reward, deadline_days)
-    st.success("Misión creada exitosamente.")
+if st.button("Crear"):
+    missions.create_mission(title, desc, mtype, base_diff, deadline_days)
+    st.success("Misión creada correctamente.")
 
 # -----------------------------------------------------------
-# RESUMEN NARRATIVO
+# DARK POINTS + RESUMEN
 # -----------------------------------------------------------
 st.markdown("---")
-st.markdown("## 📜 Narrativa del Sistema")
+st.subheader("🌑 Resumen del Sistema")
 
-daily_count = len(data["daily"])
-weekly_count = len(data["weekly"])
-side_count = len(data["side_quests"])
+dp = data.get("dark_points", 0)
 
-story = f"""
-Hoy, Aureon Nightweaver enfrenta **{daily_count} misiones diarias**, 
-**{weekly_count} semanales** y **{side_count} secundarias**.
+st.markdown(f"""
+### 🌑 Dark Points Acumulados: **{dp}**
 
-El flujo del destino se entrelaza con los plazos marcados por el Sistema.
-"""
-
-st.info(story)
+Cada misión completada alimenta tu crecimiento interior  
+y desbloquea recompensas que puedes adquirir en la sección **Admin**.
+""")
 
 # -----------------------------------------------------------
 # BACKUP
 # -----------------------------------------------------------
-if st.button("📦 Crear Backup del Día"):
+if st.button("📦 Backup"):
     msg = memory.auto_backup()
     st.success(msg)
