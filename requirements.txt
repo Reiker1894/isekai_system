@@ -3,7 +3,4 @@ pillow==10.3.0
 pandas==2.2.2
 numpy==1.26.4
 python-dateutil==2.9.0
-matplotlib
-sentence-transformers
-reportlab
-markdown
+matplotlib==3.8.2
