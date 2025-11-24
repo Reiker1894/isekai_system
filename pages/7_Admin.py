@@ -158,6 +158,72 @@ if st.button("⚠️ Forzar Activación de la Maldición"):
 
 
 st.markdown("---")
+# ------------------------------------------------------
+# ATRIBUTOS FINALES (BASE + EMOCIÓN + EFECTOS)
+# ------------------------------------------------------
+st.markdown("<div class='sl-title'>💠 Atributos Finales (con Buffs/Debuffs)</div>", unsafe_allow_html=True)
+
+
+# Contenedor estilo tarjeta
+st.markdown("<div class='sl-card'>", unsafe_allow_html=True)
+
+# Cabeceras
+st.markdown("""
+<style>
+.stats-table td {
+    padding: 6px 14px;
+    color: #A8C0FF;
+    font-size: 18px;
+}
+.stat-pos {
+    color: #4DFF91;  /* Verde */
+    font-weight: 700;
+}
+.stat-neg {
+    color: #FF5E5E;  /* Rojo */
+    font-weight: 700;
+}
+.stat-zero {
+    color: #8FA3D9;
+}
+</style>
+
+<table class='stats-table'>
+<tr>
+    <td><strong style='color:white;'>Atributo</strong></td>
+    <td><strong style='color:white;'>Base</strong></td>
+    <td><strong style='color:white;'>Final</strong></td>
+    <td><strong style='color:white;'>Diferencia</strong></td>
+</tr>
+""", unsafe_allow_html=True)
+
+
+for stat, base_value in base_stats.items():
+
+    # omitimos estos:
+    if stat in ["energy", "max_energy", "exp", "exp_to_next_level", "level"]:
+        continue
+
+    final_value = final_stats.get(stat, base_value)
+    diff = final_value - base_value
+
+    if diff > 0:
+        diff_html = f"<span class='stat-pos'>+{diff}</span>"
+    elif diff < 0:
+        diff_html = f"<span class='stat-neg'>{diff}</span>"
+    else:
+        diff_html = f"<span class='stat-zero'>0</span>"
+
+    st.markdown(f"""
+    <tr>
+        <td style='color:white;'>{stat.capitalize()}</td>
+        <td style='color:#7F8CFF;'>{base_value}</td>
+        <td style='color:white;'>{final_value}</td>
+        <td>{diff_html}</td>
+    </tr>
+    """, unsafe_allow_html=True)
+
+st.markdown("</table></div>", unsafe_allow_html=True)
 
 
 # ==========================================================
