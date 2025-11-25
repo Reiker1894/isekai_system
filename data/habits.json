@@ -1,0 +1,222 @@
+{
+  "stats": {
+    "level": 8,
+    "exp": 230,
+    "exp_to_next_level": 300,
+    "strength": 4,
+    "intelligence": 9,
+    "wisdom": 6,
+    "charisma": 7,
+    "dexterity": 5,
+    "luck": 3,
+    "energy": 52,
+    "max_energy": 100
+  },
+
+  "emotion": {
+    "mood": "neutral",
+    "stress": 40,
+    "anxiety": 35,
+    "motivation": 60,
+    "clarity": 55,
+    "fatigue": 30,
+    "notes": "Ataque leve de la maldición, pero avanzado en Mercor."
+  },
+
+  "economy": {
+    "savings": 0,
+    "monthly_income": 6100000,
+    "monthly_expenses": 5000000,
+    "debt": 180000000
+  },
+
+  "missions": {
+    "daily": [],
+    "weekly": [],
+    "side_quests": [],
+    "main_quest": {}
+  },
+
+  "bosses": {
+    "name": "Beso de la Bruja",
+    "phase": 1,
+    "current_hp": 72,
+    "total_phases": 3,
+    "difficulty": 3,
+    "type": "emotional"
+  },
+
+  "domains": {
+    "politics": {
+      "name": "Política",
+      "level": 1,
+      "exp": 0,
+      "exp_to_next": 100,
+      "milestones": {
+        "1": "Primer análisis político",
+        "3": "Contacto con experto o líder",
+        "5": "Participar en un foro",
+        "8": "Networking avanzado",
+        "10": "Ingresar a un partido político",
+        "15": "Cargo o rol político real"
+      },
+      "unlocked": [],
+      "weekly_dynamic_milestones": []
+    },
+
+    "academia": {
+      "name": "Academia",
+      "level": 1,
+      "exp": 0,
+      "exp_to_next": 100,
+      "milestones": {
+        "1": "Rutina mínima de estudio",
+        "3": "Consistencia semanal",
+        "5": "Terminas el semestre",
+        "8": "Tesis avanzada",
+        "10": "Defensa exitosa",
+        "15": "Beca o publicación"
+      },
+      "unlocked": [],
+      "weekly_dynamic_milestones": []
+    },
+
+    "consulting": {
+      "name": "Consultoría",
+      "level": 1,
+      "exp": 0,
+      "exp_to_next": 100,
+      "milestones": {
+        "1": "Actualizas tu CV",
+        "3": "Primer avance en Mercor",
+        "5": "Perfil optimizado",
+        "8": "Primer contrato o consultoría",
+        "10": "Freelancer estable",
+        "15": "Consultor senior"
+      },
+      "unlocked": [],
+      "weekly_dynamic_milestones": []
+    },
+
+    "finance": {
+      "name": "Finanzas",
+      "level": 1,
+      "exp": 0,
+      "exp_to_next": 100,
+      "milestones": {
+        "1": "Ahorro inicial 1.2M",
+        "3": "10M ahorrados",
+        "5": "20M ahorrados",
+        "8": "40M ahorrados",
+        "10": "80M ahorrados",
+        "15": "160M ahorrados"
+      },
+      "unlocked": [],
+      "weekly_dynamic_milestones": []
+    },
+
+    "family": {
+      "name": "Familia",
+      "level": 1,
+      "exp": 0,
+      "exp_to_next": 100,
+      "milestones": {
+        "1": "Llamada a mamá/papá",
+        "3": "Encuentro familiar",
+        "5": "Fin de semana juntos",
+        "8": "Sanación emocional",
+        "10": "Relación estable",
+        "15": "Armonía familiar total"
+      },
+      "unlocked": [],
+      "weekly_dynamic_milestones": []
+    }
+  },
+
+  "map": {
+    "active_zones": [],
+    "discovered_zones": [],
+    "last_update": null
+  },
+
+  "world": {
+    "realms": {
+      "politics": { "progress": 18, "reputation": 12, "difficulty": 3 },
+      "academia": { "progress": 22, "reputation": 18, "difficulty": 2 },
+      "consulting": { "progress": 10, "reputation": 8, "difficulty": 3 },
+      "family": { "progress": 15, "reputation": 7, "difficulty": 2 }
+    },
+    "events": []
+  },
+
+  "effects": [],
+
+  "curse": {
+    "name": "Beso de la Bruja",
+    "active": false,
+    "intensity": 1,
+    "last_trigger": null,
+    "cooldown_hours": 12
+  },
+
+  "dark_points": 0,
+
+  "reward_store": [
+    { "name": "🍺 Salir a tomar cervezas", "cost": 1000 },
+    { "name": "🍝 Salir a cenar", "cost": 2000 },
+    { "name": "📚 Comprar un libro", "cost": 1500 },
+    { "name": "☕ Café premium", "cost": 300 },
+    { "name": "🎁 Comprarte algo pequeño", "cost": 500 }
+  ],
+
+  "logs": [
+    {
+      "date": "2025-11-24",
+      "entry": "Intento de energía baja; ataque leve del Beso de la Bruja."
+    }
+  ],
+
+  "habits": {
+    "daily_log": {},
+    "definitions": [
+      {
+        "name": "Levantarse 5am",
+        "id": "wake_5am",
+        "days": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        "effects": {
+          "motivation": 5,
+          "clarity": 2,
+          "energy": 3
+        }
+      },
+      {
+        "name": "Dormir 7-8h",
+        "id": "sleep_8h",
+        "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+        "effects": {
+          "energy": 10,
+          "fatigue": -10,
+          "clarity": 5
+        }
+      },
+      {
+        "name": "Practicar Inglés 1h",
+        "id": "english_1h",
+        "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+        "effects": {
+          "intelligence": 1,
+          "domains": {"academia": 5}
+        }
+      },
+      {
+        "name": "Leer 1h",
+        "id": "read_1h",
+        "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+        "effects": {
+          "intelligence": 1,
+          "domains": {"academia": 5}
+        }
+      }
+    ]
+  }
+}
