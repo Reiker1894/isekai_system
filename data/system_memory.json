@@ -176,45 +176,141 @@
     }
   ],
 
-  "habits": {
-    "daily_log": {},
-    "definitions": [
-      {
-        "name": "Levantarse 5am",
-        "id": "wake_5am",
-        "days": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-        "effects": {
-          "motivation": 5,
-          "clarity": 2,
-          "energy": 3
-        }
-      },
-      {
-        "name": "Dormir 7-8h",
-        "id": "sleep_8h",
-        "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
-        "effects": {
-          "energy": 10,
-          "fatigue": -10,
-          "clarity": 5
-        }
-      },
-      {
-        "name": "Practicar Inglés 1h",
-        "id": "english_1h",
-        "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
-        "effects": {
-          "intelligence": 1,
-          "domains": {"academia": 5}
-        }
-      },
-      {
-        "name": "Leer 1h",
-        "id": "read_1h",
-        "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
-        "effects": {
-          "intelligence": 1,
-          "domains": {"academia": 5}
+ "habits": {
+  "daily_log": {},
+
+  "definitions": [
+    {
+      "id": "wake_5am",
+      "name": "Levantarse 5am",
+      "days": ["Mon","Tue","Wed","Thu","Fri","Sat"],
+      "effects": { "energy": 5, "motivation": 4, "clarity": 2 }
+    },
+    {
+      "id": "sleep_hours",
+      "name": "Dormir 7-8h",
+      "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+      "effects": { "energy": 10, "fatigue": -8, "clarity": 3 }
+    },
+    {
+      "id": "shower",
+      "name": "Ducha",
+      "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+      "effects": { "clarity": 1 }
+    },
+    {
+      "id": "stretch",
+      "name": "Estiramientos",
+      "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+      "effects": { "fatigue": -3, "dexterity": 1 }
+    },
+    {
+      "id": "prepare_day",
+      "name": "Preparar día",
+      "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+      "effects": { "motivation": 4, "clarity": 2 }
+    },
+    {
+      "id": "set_goals",
+      "name": "Metas",
+      "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+      "effects": { "clarity": 3 }
+    },
+    {
+      "id": "vision_future",
+      "name": "Visión del futuro",
+      "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+      "effects": { "motivation": 4 }
+    },
+    {
+      "id": "check_offers",
+      "name": "Revisar ofertas (trabajo)",
+      "days": ["Mon","Tue","Wed","Thu","Fri","Sat"],
+      "effects": { "domains": { "consulting": 8 } }
+    },
+    {
+      "id": "read_1h",
+      "name": "Leer 1h",
+      "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+      "effects": { "intelligence": 1, "domains": { "academia": 5 } }
+    },
+    {
+      "id": "fenix_podcast",
+      "name": "Seminario Fénix (Podcast 30m)",
+      "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+      "effects": { "wisdom": 1 }
+    },
+    {
+      "id": "legatus",
+      "name": "Legatus",
+      "days": ["Mon","Tue","Wed","Thu","Fri","Sat"],
+      "effects": { "wisdom": 1 }
+    },
+    {
+      "id": "english_1h",
+      "name": "Practicar Inglés 1h",
+      "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+      "effects": { "intelligence": 1, "domains": { "academia": 5 } }
+    },
+    {
+      "id": "study_trading",
+      "name": "Estudiar trading",
+      "days": ["Sat","Sun"],
+      "effects": { "intelligence": 1, "domains": { "finance": 10 } }
+    },
+    {
+      "id": "track_operations",
+      "name": "Seguimiento de operaciones",
+      "days": ["Mon","Wed","Fri"],
+      "effects": { "clarity": 2 }
+    },
+    {
+      "id": "brush_teeth",
+      "name": "Dientes 3 veces",
+      "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+      "effects": { "charisma": 1 }
+    },
+    {
+      "id": "breakfast",
+      "name": "Desayuno",
+      "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+      "effects": { "energy": 3 }
+    },
+    {
+      "id": "eat_fruits",
+      "name": "Comer fruta",
+      "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+      "effects": { "energy": 2 }
+    },
+    {
+      "id": "water_1l",
+      "name": "Tomar 1L de agua",
+      "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+      "effects": { "energy": 4, "clarity": 1 }
+    },
+    {
+      "id": "exercise",
+      "name": "Ejercicio",
+      "days": ["Sat","Sun"],
+      "effects": { "strength": 1, "dexterity": 1, "energy": 5 }
+    },
+    {
+      "id": "no_alcohol",
+      "name": "No alcohol",
+      "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+      "effects": { "clarity": 3, "fatigue": -5 }
+    },
+    {
+      "id": "no_nails",
+      "name": "No uñas",
+      "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+      "effects": { "anxiety": -3 }
+    },
+    {
+      "id": "no_sugary_drinks",
+      "name": "No bebidas azucaradas",
+      "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+      "effects": { "energy": 2 }
         }
       }
     ]
