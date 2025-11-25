@@ -311,6 +311,8 @@
       "name": "No bebidas azucaradas",
       "days": ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
       "effects": { "energy": 2 }
-    }
-  ]
+ }
+      }
+    ]
+  }
 }
